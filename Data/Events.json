@@ -1,0 +1,48 @@
+[
+  {
+    "Id": 123,
+    "IsLive": true,
+    "StartTime": "2024-01-16T12:00:00",
+    "Odds": [
+      {
+        "Id": 1,
+        "Value": 1.5
+      },
+      {
+        "Id": 2,
+        "Value": 2.0
+      }
+    ]
+  },
+  {
+    "Id": 124,
+    "IsLive": false,
+    "StartTime": "2024-01-17T15:30:00",
+    "Odds": [
+      {
+        "Id": 3,
+        "Value": 2.3
+      },
+      {
+        "Id": 4,
+        "Value": 1.8
+      }
+    ]
+  },
+  {
+    "Id": 125,
+    "IsLive": true,
+    "StartTime": "2024-01-18T18:45:00",
+    "Odds": [
+      {
+        "Id": 5,
+        "Value": 1.7
+      },
+      {
+
+        "Id": 6,
+        "Value": 2.5
+      }
+    ]
+  }
+]
