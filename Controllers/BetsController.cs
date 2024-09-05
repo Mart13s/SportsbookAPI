@@ -18,6 +18,6 @@ namespace SportsbookAPI.Controllers;
         [HttpGet(Name = "GetAllBetsLog")]
         public IActionResult Get()
         {
-            return Ok(new List<BetDto>());
+            return Ok(new List<Bet>());
         }
 }

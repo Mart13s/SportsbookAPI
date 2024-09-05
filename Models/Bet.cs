@@ -1,7 +1,6 @@
 ﻿namespace SportsbookAPI.Models;
 
-public class BetDto
+public class Bet
 {
     public int Id { get; set; }
-    public bool IsLive { get; set; }
 }
