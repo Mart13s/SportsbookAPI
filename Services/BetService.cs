@@ -57,14 +57,14 @@ namespace SportsbookAPI.Services
 
         private static void ValidateBet (BetPlacement betPlacement)
         {
-            if (betPlacement == null) throw new ArgumentNullException("Bet placement is required.");
-            if (betPlacement.PlayerId == null) throw new ArgumentNullException("PlayerId is required.");
-            if (betPlacement.OddsId == null) throw new ArgumentNullException("OddsId is required.");
-            if (betPlacement.EventId == null) throw new ArgumentNullException("EventId is required.");
-            if (betPlacement.WagerOdds == null) throw new ArgumentNullException("WagerOdds is required.");
-            if (betPlacement.Wager == null) throw new ArgumentNullException("Wager is required.");
-            if (betPlacement.WagerOdds <= 0) throw new ArgumentException("WagerOdds must be a number above zero.");
-            if (betPlacement.Wager <= 0) throw new ArgumentException("Wager must be a number above zero.");
+            if (betPlacement == null) throw new Exception("Bet placement is required.");
+            if (betPlacement.PlayerId == null) throw new Exception("PlayerId is required.");
+            if (betPlacement.OddsId == null) throw new Exception("OddsId is required.");
+            if (betPlacement.EventId == null) throw new Exception("EventId is required.");
+            if (betPlacement.WagerOdds == null) throw new Exception("WagerOdds is required.");
+            if (betPlacement.Wager == null) throw new Exception("Wager is required.");
+            if (betPlacement.WagerOdds <= 0) throw new Exception("WagerOdds must be a number above zero.");
+            if (betPlacement.Wager <= 0) throw new Exception("Wager must be a number above zero.");
         }
 
         private Player ValidatePlayer(BetPlacement betPlacement)
