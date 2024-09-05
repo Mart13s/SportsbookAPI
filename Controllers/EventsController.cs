@@ -5,7 +5,7 @@ using SportsbookAPI.Models;
 
 namespace SportsbookAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/events")]
     [ApiController]
     public class EventsController : ControllerBase
     {

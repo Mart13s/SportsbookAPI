@@ -4,7 +4,7 @@ using SportsbookAPI.Models;
 namespace SportsbookAPI.Adapters;
 public class EventJsonAdapter : IEventAdapter
 {
-    private readonly string _filePath;
+    private readonly string _filePath = "./Data/Events.json";
 
     public EventJsonAdapter(string filePath)
     {
@@ -29,7 +29,7 @@ public class EventJsonAdapter : IEventAdapter
         }
         catch (Exception ex)
         {
-            throw new Exception($"Error while reading players: {ex.Message}. Stacktrace: {ex.StackTrace}.");
+            throw new Exception($"Error while reading events: {ex.Message}.");
         }
 
         return events;

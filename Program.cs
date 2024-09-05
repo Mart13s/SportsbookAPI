@@ -12,6 +12,7 @@ builder.Services.AddSwaggerGen();
 // Add Services
 builder.Services.AddSingleton<IEventAdapter>(provider => new EventJsonAdapter("./Data/Events.json"));
 builder.Services.AddSingleton<IPlayerAdapter>(provider => new PlayerJsonAdapter("./Data/Players.json"));
+builder.Services.AddSingleton<IBetAdapter>(provider => new BetJsonAdapter("./Data/Bets.json"));
 
 var app = builder.Build();
 

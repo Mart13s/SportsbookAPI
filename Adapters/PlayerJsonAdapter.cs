@@ -4,7 +4,7 @@ using SportsbookAPI.Models;
 namespace SportsbookAPI.Adapters;
 public class PlayerJsonAdapter : IPlayerAdapter
 {
-    private readonly string _filePath;
+    private readonly string _filePath = "./Data/Player.json";
 
     public PlayerJsonAdapter(string filePath)
     {

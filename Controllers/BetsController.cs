@@ -1,23 +1,34 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SportsbookAPI.Adapters;
 using SportsbookAPI.Models;
 
 namespace SportsbookAPI.Controllers;
 
-    [ApiController]
-    [Route("[controller]")]
-    public class BetsController : ControllerBase
+[ApiController]
+[Route("api/bets")]
+public class BetsController : ControllerBase
+{
+    IBetAdapter _betAdapter { get; set; }
+
+    public BetsController(IBetAdapter betAdapter)
     {
-        private readonly ILogger<BetsController> _logger;
+        _betAdapter = betAdapter;
+    }
 
-        public BetsController(ILogger<BetsController> logger)
+    [HttpGet(Name = "GetAllBets")]
+    public IActionResult Get()
+    {
+        List<Bet> bets;
+
+        try
         {
-            _logger = logger;
+            bets = _betAdapter.GetBets().ToList();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
         }
 
-        [HttpGet(Name = "GetAllBetsLog")]
-        public IActionResult Get()
-        {
-            return Ok(new List<Bet>());
-        }
+        return Ok(bets);
+    }
 }

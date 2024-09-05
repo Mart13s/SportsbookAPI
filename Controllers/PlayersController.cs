@@ -5,7 +5,7 @@ using SportsbookAPI.Models;
 
 namespace SportsbookAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/players")]
     [ApiController]
     public class PlayersController : ControllerBase
     {
