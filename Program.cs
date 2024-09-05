@@ -1,4 +1,5 @@
 using SportsbookAPI.Adapters;
+using SportsbookAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IEventAdapter>(provider => new EventJsonAdapter("./Data/Events.json"));
 builder.Services.AddSingleton<IPlayerAdapter>(provider => new PlayerJsonAdapter("./Data/Players.json"));
 builder.Services.AddSingleton<IBetAdapter>(provider => new BetJsonAdapter("./Data/Bets.json"));
+builder.Services.AddScoped<IBetService, BetService>();
 
 var app = builder.Build();
 

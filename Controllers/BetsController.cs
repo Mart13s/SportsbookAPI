@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SportsbookAPI.Adapters;
 using SportsbookAPI.Models;
+using SportsbookAPI.Services;
 
 namespace SportsbookAPI.Controllers;
 
@@ -8,11 +9,11 @@ namespace SportsbookAPI.Controllers;
 [Route("api/bets")]
 public class BetsController : ControllerBase
 {
-    IBetAdapter _betAdapter { get; set; }
+    private readonly IBetService _betService;
 
-    public BetsController(IBetAdapter betAdapter)
+    public BetsController(IBetService betService)
     {
-        _betAdapter = betAdapter;
+        _betService = betService;
     }
 
     [HttpGet(Name = "GetAllBets")]
@@ -22,7 +23,7 @@ public class BetsController : ControllerBase
 
         try
         {
-            bets = _betAdapter.GetBets().ToList();
+            bets = _betService.GetBets().ToList();
         }
         catch (Exception ex)
         {
@@ -30,5 +31,28 @@ public class BetsController : ControllerBase
         }
 
         return Ok(bets);
+    }
+
+    [HttpPost(Name = "Place Bet")]
+    public IActionResult PlaceBet([FromBody] BetPlacement bet)
+    {
+        if (bet == null) return BadRequest("Bet is null.");
+        if (bet.PlayerId == null) return BadRequest("PlayerId is required.");
+        if (bet.OddsId == null) return BadRequest("OddsId is required.");
+        if (bet.EventId == null) return BadRequest("EventId is required.");
+        if (bet.WagerOdds == null) return BadRequest("WagerOdds is required.");
+        if (bet.Wager == null) return BadRequest("Wager is required.");
+
+        int? betId = null;
+        try
+        {
+            betId = _betService.PlaceBet(bet);
+        }
+        catch (Exception ex)
+        {
+            BadRequest("Failed to place bet: " + ex.Message);
+        }
+
+        return Ok($"Bet with id {betId} created successfully.");
     }
 }
