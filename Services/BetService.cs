@@ -30,14 +30,14 @@ namespace SportsbookAPI.Services
 
             if (CheckOddsDifference(betPlacement, bettingEvent, odds))
             {
-                Bet bet = new Bet()
+                Bet bet = new()
                 {
                     Id = new Random().Next(),
-                    EventId = (int)betPlacement.EventId,
-                    PlayerId = (int)betPlacement.PlayerId,
-                    OddsId = (int)betPlacement.OddsId,
-                    WagerOdds = (decimal)betPlacement.WagerOdds,
-                    Wager = (decimal)betPlacement.Wager
+                    EventId = betPlacement.EventId,
+                    PlayerId = betPlacement.PlayerId,
+                    OddsId = betPlacement.OddsId,
+                    WagerOdds = betPlacement.WagerOdds,
+                    Wager = betPlacement.Wager
                 };
 
                 try
@@ -48,12 +48,14 @@ namespace SportsbookAPI.Services
                 {
                     throw new Exception($"Error adding bet: {bet.Id}. {ex.Message}.");
                 }
+
+                return bet.Id;
             }
 
             throw new Exception("Bet rejected.");
         }
 
-        private void ValidateBet (BetPlacement betPlacement)
+        private static void ValidateBet (BetPlacement betPlacement)
         {
             if (betPlacement == null) throw new ArgumentNullException("Bet placement is required.");
             if (betPlacement.PlayerId == null) throw new ArgumentNullException("PlayerId is required.");
@@ -67,9 +69,7 @@ namespace SportsbookAPI.Services
 
         private Player ValidatePlayer(BetPlacement betPlacement)
         {
-            var player = _playerAdapter.GetPlayers().FirstOrDefault(p => p.Id == betPlacement.PlayerId);
-
-            if (player == null) throw new Exception($"Player with Id {betPlacement.PlayerId} was not found.");
+            var player = _playerAdapter.GetPlayers().FirstOrDefault(p => p.Id == betPlacement.PlayerId) ?? throw new Exception($"Player with Id {betPlacement.PlayerId} was not found.");
             if (player.Balance <= 0) throw new Exception("Player has insufficient balance to place bet.");
             if (player.Balance < betPlacement.Wager) throw new Exception("Player has insufficient balance to place bet.");
 
@@ -78,9 +78,7 @@ namespace SportsbookAPI.Services
 
         private Event ValidateEvent(BetPlacement betPlacement)
         {
-            var bettingEvent = _eventAdapter.GetEvents().FirstOrDefault(e => e.Id == betPlacement.EventId);
-
-            if (bettingEvent == null) throw new Exception($"Event with Id {betPlacement.EventId} was not found.");
+            var bettingEvent = _eventAdapter.GetEvents().FirstOrDefault(e => e.Id == betPlacement.EventId) ?? throw new Exception($"Event with Id {betPlacement.EventId} was not found.");
             if (bettingEvent.Odds == null || !bettingEvent.Odds.Any()) throw new Exception($"Event with Id {betPlacement.EventId} has no odds.");
             if (!bettingEvent.IsLive && bettingEvent.StartTime < DateTime.Now) throw new Exception($"Event with Id {betPlacement.EventId}. Betting is closed.");
             if (bettingEvent.IsLive && bettingEvent.StartTime > DateTime.Now) throw new Exception($"Event with Id {betPlacement.EventId}. Betting is not open yet.");
@@ -88,17 +86,15 @@ namespace SportsbookAPI.Services
             return bettingEvent;
         }
 
-        private Odds ValidateOdds(BetPlacement betPlacement, Event bettingEvent)
+        private static Odds ValidateOdds(BetPlacement betPlacement, Event bettingEvent)
         {
-            var odds = bettingEvent?.Odds?.FirstOrDefault(o => o.Id == betPlacement.OddsId);
-
-            if (odds == null) throw new Exception($"Odds with Id {betPlacement.OddsId} not found.");
+            var odds = (bettingEvent?.Odds?.FirstOrDefault(o => o.Id == betPlacement.OddsId)) ?? throw new Exception($"Odds with Id {betPlacement.OddsId} not found.");
             if (odds.Value <= 0) throw new Exception($"Odds with Id {betPlacement.OddsId} must have positive odds.");
 
             return odds;
         }
 
-        private bool CheckOddsDifference(BetPlacement betPlacement, Event bettingEvent, Odds odds)
+        private static bool CheckOddsDifference(BetPlacement betPlacement, Event bettingEvent, Odds odds)
         {
             if (betPlacement == null || betPlacement.WagerOdds == null || odds == null) return false;
 

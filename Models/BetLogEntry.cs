@@ -6,5 +6,6 @@
         public int? EventId { get; set; }
         public int? OddsId { get; set; }
         public int? ResultCode { get; set; }
+        public string Message { get; set; } = string.Empty;
     }
 }

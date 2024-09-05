@@ -1,9 +1,1 @@
-[
-  {
-    "Id": 1,
-    "EventId": 1,
-    "OddId": 2,
-    "WagerOdds": 2.0,
-    "Wager": 50.6
-  }
-]
+[{"Id":1,"EventId":1,"OddsId":null,"PlayerId":null,"WagerOdds":2.0,"Wager":50.6},{"Id":61187435,"EventId":123,"OddsId":1,"PlayerId":12456,"WagerOdds":1.5,"Wager":1.0},{"Id":1101689569,"EventId":123,"OddsId":1,"PlayerId":12456,"WagerOdds":1.6,"Wager":1.0},{"Id":694888506,"EventId":123,"OddsId":1,"PlayerId":12456,"WagerOdds":1.6,"Wager":1.0},{"Id":128340085,"EventId":123,"OddsId":1,"PlayerId":12456,"WagerOdds":1.5,"Wager":10.0},{"Id":890002437,"EventId":123,"OddsId":1,"PlayerId":12456,"WagerOdds":1.5,"Wager":10.0}]

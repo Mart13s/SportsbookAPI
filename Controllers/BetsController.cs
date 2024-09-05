@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using SportsbookAPI.Adapters;
 using SportsbookAPI.Models;
 using SportsbookAPI.Services;
 
@@ -10,13 +9,15 @@ namespace SportsbookAPI.Controllers;
 public class BetsController : ControllerBase
 {
     private readonly IBetService _betService;
+    private readonly IBetLogger _logger;
 
-    public BetsController(IBetService betService)
+    public BetsController(IBetService betService, IBetLogger betLogger)
     {
         _betService = betService;
+        _logger = betLogger;
     }
 
-    [HttpGet(Name = "GetAllBets")]
+    [HttpGet]
     public IActionResult Get()
     {
         List<Bet> bets;
@@ -33,26 +34,38 @@ public class BetsController : ControllerBase
         return Ok(bets);
     }
 
-    [HttpPost(Name = "Place Bet")]
+    [HttpPost]
     public IActionResult PlaceBet([FromBody] BetPlacement bet)
     {
-        if (bet == null) return BadRequest("Bet is null.");
-        if (bet.PlayerId == null) return BadRequest("PlayerId is required.");
-        if (bet.OddsId == null) return BadRequest("OddsId is required.");
-        if (bet.EventId == null) return BadRequest("EventId is required.");
-        if (bet.WagerOdds == null) return BadRequest("WagerOdds is required.");
-        if (bet.Wager == null) return BadRequest("Wager is required.");
-
-        int? betId = null;
+        int? betId;
         try
         {
             betId = _betService.PlaceBet(bet);
         }
         catch (Exception ex)
         {
-            BadRequest("Failed to place bet: " + ex.Message);
+            _logger.Log(bet.EventId, bet.OddsId, 400, ex.Message);
+            return BadRequest("Failed to place bet: " + ex.Message);
         }
 
+        _logger.Log(bet.EventId, bet.OddsId, 200, $"Bet with id {betId} created successfully.", betId);
         return Ok($"Bet with id {betId} created successfully.");
+    }
+
+    [HttpGet("log")]
+    public IActionResult GetAllBetsLog()
+    {
+        List<BetLogEntry> betLogEntries;
+
+        try
+        {
+            betLogEntries = _logger.GetBetLogEntries().ToList();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+
+        return Ok(betLogEntries);
     }
 }
